@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSpring, useTrail, config, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
-
+import { users } from "./users";
 import {
   Container,
   SearchComponent,
@@ -14,19 +14,6 @@ import {
 } from "./Components";
 
 const App = () => {
-  const allUsers = [
-    { name: "Anders", status: "away" },
-    { name: "Anna", status: "online" },
-    { name: "Annica", status: "offline" },
-    { name: "Bo", status: "online" },
-    { name: "Bob", status: "away" },
-    { name: "Cara", status: "away" },
-    { name: "Carmina", status: "online" },
-    { name: "Carmen", status: "offline" },
-    { name: "Davor", status: "online" },
-    { name: "Eugen", status: "online" },
-    { name: "Eve", status: "offline" }
-  ];
   const [isFocused, setIsFocused] = useState(false);
   const [searchUsers, setSearchUsers] = useState([]);
   const [value, setValue] = useState("");
@@ -68,7 +55,7 @@ const App = () => {
   useEffect(() => {
     if (value.length) {
       setSearchUsers(
-        allUsers.filter(el =>
+        users.filter(el =>
           el.name.toLowerCase().includes(value.trim().toLocaleLowerCase())
         )
       );

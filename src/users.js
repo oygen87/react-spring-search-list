@@ -1,0 +1,22 @@
+export const users = [
+  { name: "Alexander", status: "away" },
+  { name: "Anna", status: "online" },
+  { name: "Annica", status: "offline" },
+  { name: "Bo", status: "online" },
+  { name: "Bob", status: "away" },
+  { name: "Cara", status: "away" },
+  { name: "Carmen", status: "offline" },
+  { name: "Eugen", status: "online" },
+  { name: "Eve", status: "offline" },
+  { name: "Filip", status: "away" },
+  { name: "Gerry", status: "online" },
+  { name: "Inge", status: "offline" },
+  { name: "Kristen", status: "online" },
+  { name: "Martinus", status: "away" },
+  { name: "Nikola", status: "away" },
+  { name: "Ole", status: "online" },
+  { name: "Pia", status: "offline" },
+  { name: "Trump", status: "online" },
+  { name: "Xerxes", status: "online" },
+  { name: "Zorro", status: "offline" }
+];
