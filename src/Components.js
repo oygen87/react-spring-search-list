@@ -33,6 +33,7 @@ export const Input = styled.input`
   background: transparent;
   z-index: 2;
   font-family: "Roboto", sans-serif;
+  font-size: 16px;
 `;
 
 export const Placeholder = styled(animated.span)`
