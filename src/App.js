@@ -33,22 +33,22 @@ const App = () => {
 
   const [ref, { height, width }] = useMeasure();
 
-  const [propsHeight, setHeight, _stop] = useSpring(() => ({
+  const [propsHeight, setHeight] = useSpring(() => ({
     config: config.stiff,
     to: { height: 0 }
   }));
 
-  const [propsPlaceholder, setPropsPlaceholder, __stop] = useSpring(() => ({
+  const [propsPlaceholder, setPropsPlaceholder] = useSpring(() => ({
     config: config.stiff,
     to: { x: 0, w: 100 }
   }));
 
-  const [propsOpacity, setOpacity, ___stop] = useSpring(() => ({
+  const [propsOpacity, setOpacity] = useSpring(() => ({
     config: config.stiff,
     to: { opacity: 1 }
   }));
 
-  const [propsEraseScale, setEraseScale, ____stop] = useSpring(() => ({
+  const [propsEraseScale, setEraseScale] = useSpring(() => ({
     config: config.wobbly,
     to: { scale: 1 }
   }));
