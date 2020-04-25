@@ -98,7 +98,7 @@ const App = () => {
         <List ref={ref}>
           {trail.map((props, index) => {
             return (
-              <ListItem key={searchUsers[index]} style={props}>
+              <ListItem key={searchUsers[index].name} style={props}>
                 <Status status={searchUsers[index].status} />
                 <span>{searchUsers[index].name}</span>
               </ListItem>
