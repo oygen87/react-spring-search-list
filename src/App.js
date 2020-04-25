@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useSpring, useTrail, animated, config } from "react-spring";
+import { useSpring, useTrail, config, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
-import styled from "styled-components";
+
+import {
+  Container,
+  SearchComponent,
+  Input,
+  Placeholder,
+  IconErase,
+  List,
+  ListItem,
+  Status
+} from "./Components";
 
 const App = () => {
   const allUsers = [
@@ -38,10 +48,21 @@ const App = () => {
     to: { opacity: 1 }
   }));
 
+  const [propsEraseScale, setEraseScale, ____stop] = useSpring(() => ({
+    config: config.wobbly,
+    to: { scale: 1 }
+  }));
+
   const trail = useTrail(searchUsers.length, {
     config: { mass: 1, tension: 500, friction: 30 },
     from: { opacity: 0.8, transform: "translate3d(-5px,0,0)" },
     to: { opacity: 1, transform: "translate3d(0,0,0)" }
+  });
+
+  const transitionClose = useTransition(isFocused && value.length > 0, null, {
+    from: { opacity: 0, transform: "scale(0.8)" },
+    enter: { opacity: 1, transform: "scale(1)" },
+    leave: { opacity: 0, transform: "scale(0.8)" }
   });
 
   useEffect(() => {
@@ -87,6 +108,43 @@ const App = () => {
         >
           Search
         </Placeholder>
+
+        {transitionClose.map(
+          ({ item, key, props }) =>
+            item && (
+              <IconErase
+                key={key}
+                style={{
+                  ...props,
+                  transform:
+                    value.length > 0 && isFocused
+                      ? propsEraseScale.scale.interpolate(s => `scale(${s})`)
+                      : props.transform
+                }}
+                onClick={() => setValue("")}
+                onMouseMove={() => setEraseScale({ scale: 1.1 })}
+                onMouseLeave={() => setEraseScale({ scale: 1 })}
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.3394 9.32245C16.7434 8.94589 16.7657 8.31312 16.3891 7.90911C16.0126 7.50509 15.3798 7.48283 14.9758 7.85938L12.0497 10.5866L9.32245 7.66048C8.94589 7.25647 8.31312 7.23421 7.90911 7.61076C7.50509 7.98731 7.48283 8.62008 7.85938 9.0241L10.5866 11.9502L7.66048 14.6775C7.25647 15.054 7.23421 15.6868 7.61076 16.0908C7.98731 16.4948 8.62008 16.5171 9.0241 16.1405L11.9502 13.4133L14.6775 16.3394C15.054 16.7434 15.6868 16.7657 16.0908 16.3891C16.4948 16.0126 16.5171 15.3798 16.1405 14.9758L13.4133 12.0497L16.3394 9.32245Z"
+                  id="cross"
+                  fill="currentColor"
+                />
+                <path
+                  id="circle"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z"
+                  fill="currentColor"
+                />
+              </IconErase>
+            )
+        )}
         <Input
           type="text"
           onChange={e => setValue(e.target.value)}
@@ -94,7 +152,6 @@ const App = () => {
           onBlur={() => setIsFocused(false)}
           value={value}
         />
-
         <List ref={ref}>
           {trail.map((props, index) => {
             return (
@@ -111,75 +168,3 @@ const App = () => {
 };
 
 export default App;
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 500px;
-  font-family: "Roboto", sans-serif;
-`;
-
-const SearchComponent = styled(animated.div)`
-  background: white;
-  overflow: hidden;
-  width: 100%;
-  border-radius: 8px;
-  position: relative;
-  z-index: 1;
-  min-height: 50px;
-  margin-top: 50px;
-  box-shadow: 2px 4px 6px 2px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: 2px 4px 6px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 2px 4px 6px 2px rgba(0, 0, 0, 0.05);
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border: 0;
-  height: 50px;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  outline: none;
-  position: relative;
-  background: transparent;
-  z-index: 2;
-`;
-
-const Placeholder = styled(animated.span)`
-  color: #ccc;
-  position: absolute;
-  top: 15px;
-  width: 100%;
-  text-align: center;
-  //left: 1rem;
-`;
-
-const List = styled(animated.div)`
-  background: transparent;
-  width: 100%;
-`;
-
-const ListItem = styled(animated.div)`
-  width: 100%;
-  background: white;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-
-  span {
-    margin-left: 1rem;
-  }
-`;
-
-const Status = styled.div`
-  height: 10px;
-  width: 10px;
-  border-radius: 10px;
-  display: inline-block;
-  background: ${props =>
-    props.status === "online"
-      ? "lime"
-      : props.status === "offline"
-      ? "tomato"
-      : "yellow"};
-`;
